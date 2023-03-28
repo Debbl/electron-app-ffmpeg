@@ -1,14 +1,16 @@
 {
-  "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "electro-app-ffmpeg",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "private": true,
+  "description": "My application description",
+  "author": "Debbl <me@aiwan.run>(https://github.com/Debbl/)",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "lint": "eslint . --ignore-path .gitignore",
+    "lint:fix": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
@@ -16,11 +18,15 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@debbl/eslint-config-prettier": "^0.0.36",
+    "@debbl/eslint-config-react": "^0.0.36",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "antd": "^4.22.8",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
+    "eslint": "^8.36.0",
+    "eslint-define-config": "^1.17.0",
     "next": "^12.3.4",
     "nextron": "^8.5.0",
     "react": "^18.2.0",
