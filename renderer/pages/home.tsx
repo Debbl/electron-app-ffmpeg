@@ -1,104 +1,71 @@
-import React from "react";
-import Head from "next/head";
-import Link from "next/link";
-import {
-  Button,
-  DatePicker,
-  Form,
-  InputNumber,
-  Layout,
-  Select,
-  Slider,
-  Switch,
-} from "antd";
-
-const { Header, Content } = Layout;
-const { Item: FormItem } = Form;
-const { Option } = Select;
+import type { MouseEventHandler } from "react";
+import React, { useRef } from "react";
+import { UploadOutlined } from "@ant-design/icons";
+import type { UploadFile } from "antd";
+import { Button, Select, Upload } from "antd";
+import ffmpeg from "fluent-ffmpeg";
+import type { UploadChangeParam } from "antd/lib/upload";
+import { ipcRenderer } from "electron";
 
 function Home() {
+  const options = [
+    {
+      value: "avi",
+      label: "AVI",
+    },
+    {
+      value: "flv",
+      label: "FLV",
+    },
+    {
+      value: "mkv",
+      label: "MKV",
+    },
+    {
+      value: "mov",
+      label: "MOV",
+    },
+    {
+      value: "mp4",
+      label: "MP4",
+    },
+    {
+      value: "wmv",
+      label: "WMV",
+    },
+  ];
+
+  const toFormat = useRef("");
+  const scrPath = useRef("");
+
+  const handleChange = (value: string) => {
+    toFormat.current = value;
+  };
+
+  const handleClick: MouseEventHandler<HTMLElement> = () => {
+    console.log("ok");
+    ipcRenderer.send("convert", {
+      srcPath: scrPath.current,
+      format: toFormat.current,
+    });
+  };
+
+  const handleChangeFile = (info: UploadChangeParam<UploadFile<any>>) => {
+    scrPath.current = (info.file.originFileObj as any).path;
+  };
+
   return (
-    <React.Fragment>
-      <Head>
-        <title>Home - Nextron (with-javascript-ant-design)</title>
-      </Head>
-
-      <Header>
-        <Link href="/next">
-          <a>Go to next page</a>
-        </Link>
-      </Header>
-
-      <Content style={{ padding: 48 }}>
-        <Form layout="horizontal">
-          <FormItem
-            label="Input Number"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <InputNumber
-              size="large"
-              min={1}
-              max={10}
-              style={{ width: 100 }}
-              defaultValue={3}
-              name="inputNumber"
-            />
-            <a href="#">Link</a>
-          </FormItem>
-
-          <FormItem
-            label="Switch"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Switch defaultChecked />
-          </FormItem>
-
-          <FormItem
-            label="Slider"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Slider defaultValue={70} />
-          </FormItem>
-
-          <FormItem
-            label="Select"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Select size="large" defaultValue="lucy" style={{ width: 192 }}>
-              <Option value="jack">jack</Option>
-              <Option value="lucy">lucy</Option>
-              <Option value="disabled" disabled>
-                disabled
-              </Option>
-              <Option value="yiminghe">yiminghe</Option>
-            </Select>
-          </FormItem>
-
-          <FormItem
-            label="DatePicker"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <DatePicker name="startDate" />
-          </FormItem>
-          <FormItem
-            style={{ marginTop: 48 }}
-            wrapperCol={{ span: 8, offset: 8 }}
-          >
-            <Button size="large" type="primary" htmlType="submit">
-              OK
-            </Button>
-            <Button size="large" style={{ marginLeft: 8 }}>
-              Cancel
-            </Button>
-          </FormItem>
-        </Form>
-      </Content>
-    </React.Fragment>
+    <div>
+      <Upload onChange={handleChangeFile}>
+        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+      </Upload>
+      <Select
+        onChange={handleChange}
+        style={{ width: 120 }}
+        options={options}
+      />
+      <Button onClick={handleClick}>转化</Button>
+    </div>
   );
 }
 

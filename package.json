@@ -8,18 +8,26 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
+    "build:all": "nextron build --all",
+    "build:win32": "nextron build --win --ia32",
+    "build:win64": "nextron build --win --x64",
+    "build:mac": "nextron build --mac --x64",
+    "build:linux": "nextron build --linux",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint . --ignore-path .gitignore",
     "lint:fix": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "ffmpeg-static-electron": "^2.0.3",
+    "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@debbl/eslint-config-prettier": "^0.0.36",
     "@debbl/eslint-config-react": "^0.0.36",
+    "@types/fluent-ffmpeg": "^2.1.21",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "antd": "^4.22.8",
